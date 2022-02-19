@@ -259,34 +259,12 @@ function mergeRecords<
   MM extends DeepMergeBuiltInMetaData
 >(values: Ts, utils: U, meta: M | undefined) {
   const result: Record<PropertyKey, unknown> = {};
-
-  /* eslint-disable functional/no-loop-statement, functional/no-conditional-statement -- using a loop here is more performant. */
-
-  for (const key of getKeys(values)) {
-    const propValues = [];
-
-    for (const value of values) {
-      if (objectHasProperty(value, key)) {
-        propValues.push(value[key]);
-      }
-    }
-
-    // assert(propValues.length > 0);
-
-    const updatedMeta = utils.metaDataUpdater(meta, {
-      key,
-      parents: values,
-    } as unknown as MM);
-
-    result[key] = mergeUnknowns<ReadonlyArray<unknown>, U, MF, M, MM>(
-      propValues,
-      utils,
-      updatedMeta
-    );
-  }
-
-  /* eslint-enable functional/no-loop-statement, functional/no-conditional-statement */
-
+  mergeRecordsInto<typeof result, Ts, U, MF, M, MM>(
+    result,
+    values,
+    utils,
+    meta
+  );
   return result as DeepMergeRecordsDefaultHKT<Ts, MF, M>;
 }
 

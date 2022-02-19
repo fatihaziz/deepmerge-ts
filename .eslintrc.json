@@ -43,6 +43,12 @@
       "rules": {
         "functional/prefer-readonly-type": "off"
       }
+    },
+    {
+      "files": "src/deepmergeInto.ts",
+      "rules": {
+        "functional/no-return-void": "off"
+      }
     }
   ]
 }
